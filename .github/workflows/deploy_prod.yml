@@ -17,6 +17,8 @@ jobs:
       timeout-minutes: 30
       runs-on: ubuntu-latest
       steps:
+            - name: console.logging
+              run: echo 'hello'
             - name: Shopify Theme Push
               id: push
               run: echo ${{ needs.build.outputs.themeid }}
