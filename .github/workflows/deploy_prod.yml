@@ -9,7 +9,9 @@ jobs:
         steps:
             - name: Save theme_id
               id: saved_id
-              run: echo "::set-output name=themeid::HELLO" 
+              run: echo "::set-output name=themeid::HELLO"
+            - name: console.log variable
+              run: echo ${{ steps.saved_id.outputs }}
 
     deploy:
       name: publish shopify theme 
