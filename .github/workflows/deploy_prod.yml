@@ -23,11 +23,13 @@ jobs:
         timeout-minutes: 30 # nothing good happens after 30 minutes
         name: test
         runs-on: ubuntu-latest
+        outputs:
+          themeid: ${{ steps.theme_id.outputs.themeid }}
         steps:
             - name: Save theme_id
+              id: theme_id
               run: echo "::set-output name=themeid::hello"
-            - name: console.log variable
-              run: echo ${{ steps.outputs.themeid }}
+  
     deploy:
       name: publish shopify theme 
       needs: build
