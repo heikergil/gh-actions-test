@@ -1,0 +1,22 @@
+name: Test deploy
+on:
+    workflow_dispatch
+jobs:
+    build:
+        timeout-minutes: 30 # nothing good happens after 30 minutes
+        name: test
+        runs-on: ubuntu-latest
+        steps:
+            - name: Save theme_id
+              id: saved_id
+              run: echo "::set-output name=themeid::HELLO" 
+
+    deploy:
+      name: publish shopify theme 
+      needs: build
+      timeout-minutes: 30
+      runs-on: ubuntu-latest
+      steps:
+            - name: Shopify Theme Push
+              id: push
+              run: echo ${{ needs.build.outputs.themeid }}
