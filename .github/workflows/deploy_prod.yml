@@ -21,4 +21,4 @@ jobs:
       steps:
             - name: Shopify Theme Push
               id: push
-              run: echo ${{ needs.build.steps.saved_id.outputs.themeid }}
+              run: echo ${{ needs.build.outputs.themeid }}
