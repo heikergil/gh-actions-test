@@ -1,0 +1,39 @@
+name: Prod test
+on:
+    workflow_run:
+      workflows: ["Prod build"]
+      types:
+        - completed
+jobs:
+    build:
+        timeout-minutes: 30 # nothing good happens after 30 minutes
+        name: Shopify Prod Build
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v2
+            - uses: ruby/setup-ruby@v1
+            - name: Read .nvmrc
+              run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
+              id: nvm
+            - name: Use Node.js ${{ steps.nvm.outputs.NODE_VERSION }}
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ steps.nvm.outputs.NODE_VERSION }}
+                  cache: 'npm'
+
+            - name: Cache node_modules
+              uses: actions/cache@v3
+              id: cache-node-modules
+              with:
+                path: |
+                  node_modules
+                key: modules-${{ hashFiles('package-lock.json') }}
+
+            - name: Install pakages
+              if: steps.cache-node-modules.outputs.cache-hit != 'true'
+              run: npm install
+
+            - name: set-outputs
+              run: echo testing...
+            
