@@ -26,4 +26,16 @@ jobs:
 
             - name: testing
               run: echo testing...
+
+
+            - name: Slack Notification
+              uses: rtCamp/action-slack-notify@v2
+              env:
+                SLACK_CHANNEL: general
+                SLACK_COLOR: 'good' # or a specific color like 'good' or '#ff00ff'
+                SLACK_ICON: https://github.com/rtCamp.png?size=48
+                SLACK_MESSAGE: 'Post Content :rocket:'
+                SLACK_TITLE: Slack Notify
+                SLACK_USERNAME: rtCamp
+                SLACK_WEBHOOK: https://hooks.slack.com/services/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
             
