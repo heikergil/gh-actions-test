@@ -32,49 +32,49 @@ jobs:
             
          
 
-    test:              
-      name: E2E tests
-      needs: build
-      timeout-minutes: 30
-      runs-on: ubuntu-latest
-      # strategy:
-      #   fail-fast: false
-      #   matrix:
-      #     shard: [1, 2, 3]
-      steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+    # test:              
+    #   name: E2E tests
+    #   needs: build
+    #   timeout-minutes: 30
+    #   runs-on: ubuntu-latest
+    #   # strategy:
+    #   #   fail-fast: false
+    #   #   matrix:
+    #   #     shard: [1, 2, 3]
+    #   steps:
+    #   - uses: actions/checkout@v3
+    #   - uses: actions/setup-node@v3
 
-      - name: Cache node_modules
-        uses: actions/cache@v3
-        with:
-          path: |
-            node_modules
-          key: modules-${{ hashFiles('package-lock.json') }}
+    #   - name: Cache node_modules
+    #     uses: actions/cache@v3
+    #     with:
+    #       path: |
+    #         node_modules
+    #       key: modules-${{ hashFiles('package-lock.json') }}
       
-      - name: echo something
-        run: echo Hello World
+    #   - name: echo something
+    #     run: echo Hello World
 
 
-    deploy:
-      name: publish shopify theme 
-      needs: [build, test]
-      timeout-minutes: 30
-      runs-on: ubuntu-latest
-      steps:
-            - uses: actions/checkout@v3
-            - uses: actions/setup-node@v3
-              with:
-                node-version: 16
+    # deploy:
+    #   name: publish shopify theme 
+    #   needs: [build, test]
+    #   timeout-minutes: 30
+    #   runs-on: ubuntu-latest
+    #   steps:
+    #         - uses: actions/checkout@v3
+    #         - uses: actions/setup-node@v3
+    #           with:
+    #             node-version: 16
 
-            - name: Cache node_modules
-              uses: actions/cache@v3
-              id: cache-node-modules
-              with:
-                path: |
-                  node_modules
-                key: modules-${{ hashFiles('package-lock.json') }}
+    #         - name: Cache node_modules
+    #           uses: actions/cache@v3
+    #           id: cache-node-modules
+    #           with:
+    #             path: |
+    #               node_modules
+    #             key: modules-${{ hashFiles('package-lock.json') }}
 
-            - name: echo something
-              run: echo Hello World
+    #         - name: echo something
+    #           run: echo Hello World
             
