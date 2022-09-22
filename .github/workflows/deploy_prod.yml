@@ -1,6 +1,6 @@
 name: Prod build
 on:
-   workflow_dispatch:
+   [release]
      
 jobs:
     build:
@@ -9,6 +9,7 @@ jobs:
         runs-on: ubuntu-latest
         outputs:
           themeid: ${{ steps.theme_id.outputs.value }}
+          release_tag: ${{ github.event.release.tag_name }}
         steps:
             - uses: actions/checkout@v3
             - uses: actions/setup-node@v3
@@ -17,7 +18,7 @@ jobs:
 
             - name: Cache node_modules
               uses: actions/cache@v3
-              id: cache-node-modules
+              id: cache-node-module
               with:
                 path: |
                   node_modules
@@ -30,7 +31,8 @@ jobs:
             - name: set-outputs
               run: echo ::set-output name=themeid::'Hello World'
             
-         
+            - name: set
+              run: echo ${{ github.event.release.tag_name }}          
 
     # test:              
     #   name: E2E tests
