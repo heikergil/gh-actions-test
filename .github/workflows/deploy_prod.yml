@@ -34,49 +34,41 @@ jobs:
             - name: set
               run: echo ${{ github.event.release.tag_name }}          
 
-    # test:              
-    #   name: E2E tests
-    #   needs: build
-    #   timeout-minutes: 30
-    #   runs-on: ubuntu-latest
-    #   # strategy:
-    #   #   fail-fast: false
-    #   #   matrix:
-    #   #     shard: [1, 2, 3]
-    #   steps:
-    #   - uses: actions/checkout@v3
-    #   - uses: actions/setup-node@v3
-
-    #   - name: Cache node_modules
-    #     uses: actions/cache@v3
-    #     with:
-    #       path: |
-    #         node_modules
-    #       key: modules-${{ hashFiles('package-lock.json') }}
-      
-    #   - name: echo something
-    #     run: echo Hello World
-
-
-    # deploy:
-    #   name: publish shopify theme 
-    #   needs: [build, test]
-    #   timeout-minutes: 30
-    #   runs-on: ubuntu-latest
-    #   steps:
-    #         - uses: actions/checkout@v3
-    #         - uses: actions/setup-node@v3
-    #           with:
-    #             node-version: 16
-
-    #         - name: Cache node_modules
-    #           uses: actions/cache@v3
-    #           id: cache-node-modules
-    #           with:
-    #             path: |
-    #               node_modules
-    #             key: modules-${{ hashFiles('package-lock.json') }}
-
-    #         - name: echo something
-    #           run: echo Hello World
-            
+            - name: Post to a Slack channel
+              id: slack
+              uses: slackapi/slack-github-action@v1.22.0
+              with:
+                # Slack channel id, channel name, or user id to post message.
+                # See also: https://api.slack.com/methods/chat.postMessage#channels
+                # You can pass in multiple channels to post to by providing a comma-delimited list of channel IDs.
+                channel-id: 'test-workflow'
+                # For posting a simple plain text message
+                payload: |
+                  {
+                    "text": "GitHub Action build result:",
+                    "blocks": [
+                                {
+                                  "type": "header",
+                                  "text": {
+                                    "type": "plain_text",
+                                    "text": "Release Monitor :ship:",
+                                    "emoji": true
+                                  }
+                                },
+                                {
+                                  "type": "section",
+                                  "fields": [
+                                    {
+                                      "type": "mrkdwn",
+                                      "text": "*Release:*\n<${{ github.event.release.url }} | ${{ github.event.release.tag_name }}>"
+                                    },
+                                    {
+                                      "type": "mrkdwn",
+                                      "text": "*Created by:*\n${{ github.event.release.author.url }} | ${{ github.event.release.author.login }}>"
+                                    }
+                                  ]
+                                }
+                    ]
+                  }
+              env:
+                SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
