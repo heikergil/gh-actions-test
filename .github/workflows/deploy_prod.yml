@@ -97,9 +97,8 @@ jobs:
                             {
                               "type": "section",
                               "text": {
-                                "type": "plain_text",
-                                "text": " :test_tube: <${{ github.event.release.tag_name }} - ${{ github.event.release.name }} | <${{ github.event.release.url }} > Tests Set ${{ matrix.shard }}/${{ strategy.job-total }} ${{ steps.e2e_tests.outcome }}  :white_check_mark:",
-                                "emoji": true
+                                "type": "mrkdwn",
+                                "text": " :test_tube: <${{ github.event.release.tag_name }} - ${{ github.event.release.name }} | <${{ github.event.release.url }} > Tests Set ${{ matrix.shard }}/${{ strategy.job-total }} ${{ steps.e2e_tests.outcome }}  :white_check_mark:"
                               }
                             }
                           ]
