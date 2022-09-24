@@ -98,7 +98,7 @@ jobs:
                               "type": "section",
                               "text": {
                                 "type": "mrkdwn",
-                                "text": " :test_tube: <${{ github.event.release.url }} | ${{ github.event.release.tag_name }} - ${{ github.event.release.name }}> Tests Set ${{ matrix.shard }}/${{ strategy.job-total }} ${{ steps.e2e_tests.outcome }}  :white_check_mark:"
+                                "text": "<Release: ${{ github.event.release.url }} | ${{ github.event.release.tag_name }} - ${{ github.event.release.name }}> Tests Set ${{ matrix.shard }}/${{ strategy.job-total }} ${{ steps.e2e_tests.outcome }}  :white_check_mark:"
                               }
                             }
                           ]
@@ -138,7 +138,7 @@ jobs:
                               "type": "section",
                               "text": {
                                 "type": "plain_text",
-                                "text": " :ship: Release ${{ github.event.release.tag_name }} is Live :tada:",
+                                "text": "<Release: ${{ github.event.release.url }} | ${{ github.event.release.tag_name }} - ${{ github.event.release.name }}> is Live :tada:",
                                 "emoji": true
                               }
                             }
