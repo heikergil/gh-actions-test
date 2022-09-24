@@ -37,32 +37,18 @@ jobs:
                 channel-id: 'test-workflow'
                 # For posting a simple plain text message
                 payload: |
-                  {
-                    "text": "GitHub Action build result:",
-                    "blocks": [
-                                {
-                                  "type": "header",
-                                  "text": {
-                                    "type": "plain_text",
-                                    "text": "Release Monitor :ship:",
-                                    "emoji": true
-                                  }
-                                },
-                                {
-                                  "type": "section",
-                                  "fields": [
-                                    {
-                                      "type": "mrkdwn",
-                                      "text": "*Status:*\nBuild Completed"
-                                    },
-                                    {
-                                      "type": "mrkdwn",
-                                      "text": "*Created by:*\n<example.com|Fred Enriquez>"
-                                    }
-                                  ]
-                                }
-                    ]
-                  }
+                        {
+                          "blocks": [
+                            {
+                              "type": "section",
+                              "text": {
+                                "type": "plain_text",
+                                "text": " :test_tube: Release ${{ github.event.release.tag_name }} - E2E tests on live theme are Succefull  :white_check_mark:",
+                                "emoji": true
+                              }
+                            }
+                          ]
+                        }
               env:
                 SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
             

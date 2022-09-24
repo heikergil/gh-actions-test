@@ -1,15 +1,17 @@
-name: Prod build
+# release_tag: ${{ github.event.release.tag_name }}
+
+name: Prod Deploy
 on:
-   [release]
-     
+    release:
+        types: [published]
 jobs:
     build:
         timeout-minutes: 30 # nothing good happens after 30 minutes
         name: Shopify Prod Build
         runs-on: ubuntu-latest
         outputs:
-          themeid: ${{ steps.theme_id.outputs.value }}
-          release_tag: ${{ github.event.release.tag_name }}
+            themeid: ${{ steps.theme_id.outputs.value }}
+            release_tag: ${{ github.event.release.tag_name }}
         steps:
             - uses: actions/checkout@v3
             - uses: actions/setup-node@v3
@@ -18,21 +20,66 @@ jobs:
 
             - name: Cache node_modules
               uses: actions/cache@v3
-              id: cache-node-module
+              id: cache-node-modules
               with:
-                path: |
-                  node_modules
-                key: modules-${{ hashFiles('package-lock.json') }}
+                  path: |
+                      node_modules
+                  key: modules-${{ hashFiles('package-lock.json') }}
 
             - name: Install pakages
               if: steps.cache-node-modules.outputs.cache-hit != 'true'
               run: npm install
 
-            - name: set-outputs
-              run: echo ::set-output name=themeid::'Hello World'
-            
-            - name: set
-              run: echo ${{ github.event.release.tag_name }}          
+            - name: Cache Playwright
+              uses: actions/cache@v3
+              with:
+                  path: |
+                      ~/.cache/ms-playwright
+                  key: playwright-${{ hashFiles('package-lock.json') }}
+
+            - name: Install Playwright Browsers
+              if: steps.cache-playwright.outputs.cache-hit != 'true'
+              run: npx playwright install --with-deps chromium            
+
+
+
+    test:
+        name: E2E tests
+        needs: build
+        timeout-minutes: 30
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                shard: [1, 2, 3]
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
+
+            - name: Cache node_modules
+              uses: actions/cache@v3
+              with:
+                  path: |
+                      node_modules
+                  key: modules-${{ hashFiles('package-lock.json') }}
+
+            - name: Cache Playwright
+              uses: actions/cache@v3
+              with:
+                  path: |
+                      ~/.cache/ms-playwright
+                  key: playwright-${{ hashFiles('package-lock.json') }}
+
+            - name: Install Playwright Browsers
+              if: steps.cache-playwright.outputs.cache-hit != 'true'
+              run: npx playwright install --with-deps chromium
+
+            - name: Run e2e Tests on preview link
+              continue-on-error: false
+              env:
+                  CI: true
+                  PROD: true
+              run: npx playwright test --grep @homepage --shard=${{ matrix.shard }}/${{ strategy.job-total }}
 
             - name: Post to a Slack channel
               id: slack
@@ -44,31 +91,108 @@ jobs:
                 channel-id: 'test-workflow'
                 # For posting a simple plain text message
                 payload: |
-                  {
-                    "text": "GitHub Action build result:",
-                    "blocks": [
-                                {
-                                  "type": "header",
-                                  "text": {
-                                    "type": "plain_text",
-                                    "text": "Release Monitor :ship:",
-                                    "emoji": true
-                                  }
-                                },
-                                {
-                                  "type": "section",
-                                  "fields": [
-                                    {
-                                      "type": "mrkdwn",
-                                      "text": "*Release:*\n<${{ github.event.release.url }} | ${{ github.event.release.tag_name }}>"
-                                    },
-                                    {
-                                      "type": "mrkdwn",
-                                      "text": "*Created by:*\n${{ github.event.release.author.url }} | ${{ github.event.release.author.login }}>"
-                                    }
-                                  ]
-                                }
-                    ]
-                  }
+                        {
+                          "blocks": [
+                            {
+                              "type": "section",
+                              "text": {
+                                "type": "plain_text",
+                                "text": " :test_tube: Release ${{ github.event.release.tag_name }} - Tests Set ${{ matrix.shard }}/${{ strategy.job-total }} Succefull  :white_check_mark:",
+                                "emoji": true
+                              }
+                            }
+                          ]
+                        }
               env:
                 SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+
+    deploy:
+        name: publish shopify theme
+        needs: [build, test]
+        timeout-minutes: 30
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: ruby/setup-ruby@v1
+
+            - name: Cache node_modules
+              uses: actions/cache@v3
+              id: cache-node-modules
+              with:
+                  path: |
+                      node_modules
+                  key: modules-${{ hashFiles('package-lock.json') }}
+
+            - name: Post to a Slack channel
+              id: slack
+              uses: slackapi/slack-github-action@v1.22.0
+              with:
+                # Slack channel id, channel name, or user id to post message.
+                # See also: https://api.slack.com/methods/chat.postMessage#channels
+                # You can pass in multiple channels to post to by providing a comma-delimited list of channel IDs.
+                channel-id: 'test-workflow'
+                # For posting a simple plain text message
+                payload: |
+                        {
+                          "blocks": [
+                            {
+                              "type": "section",
+                              "text": {
+                                "type": "plain_text",
+                                "text": " :ship: Release ${{ github.event.release.tag_name }} is Live :tada:",
+                                "emoji": true
+                              }
+                            }
+                          ]
+                        }
+              env:
+                SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+
+
+
+
+
+
+
+
+
+            # - name: Post to a Slack channel
+            #   id: slack
+            #   uses: slackapi/slack-github-action@v1.22.0
+            #   with:
+            #     # Slack channel id, channel name, or user id to post message.
+            #     # See also: https://api.slack.com/methods/chat.postMessage#channels
+            #     # You can pass in multiple channels to post to by providing a comma-delimited list of channel IDs.
+            #     channel-id: 'test-workflow'
+            #     # For posting a simple plain text message
+            #     payload: |
+            #       {
+            #         "text": "GitHub Action build result:",
+            #         "blocks": [
+            #                     {
+            #                       "type": "header",
+            #                       "text": {
+            #                         "type": "plain_text",
+            #                         "text": "<${{ github.event.release.url }} | T${{ github.event.release.tag_name }}>" :ship:",
+            #                         "emoji": true
+            #                       }
+            #                     },
+            #                     {
+            #                       "type": "section",
+            #                       "fields": [
+            #                         {
+            #                           "type": "mrkdwn",
+            #                           "text": "*Release:*\n<${{ github.event.release.url }} | ${{ github.event.release.tag_name }}>"
+            #                         },
+            #                         {
+            #                           "type": "mrkdwn",
+            #                           "text": "*Created by:*\n<${{ github.event.release.author.url }} | ${{ github.event.release.author.login }}>"
+            #                         }
+            #                       ]
+            #                     }
+            #         ]
+            #       }
+            #   env:
+            #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
