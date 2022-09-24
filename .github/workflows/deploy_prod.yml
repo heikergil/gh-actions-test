@@ -75,7 +75,8 @@ jobs:
               run: npx playwright install --with-deps chromium
 
             - name: Run e2e Tests on preview link
-              continue-on-error: false
+              id: e2e_tests
+              continue-on-error: true
               env:
                   CI: true
                   PROD: true
@@ -97,7 +98,7 @@ jobs:
                               "type": "section",
                               "text": {
                                 "type": "plain_text",
-                                "text": " :test_tube: Release ${{ github.event.release.tag_name }} - Tests Set ${{ matrix.shard }}/${{ strategy.job-total }} Succefull  :white_check_mark:",
+                                "text": " :test_tube: <${{ github.event.release.tag_name }} - ${{ github.event.release.name }} | <${{ github.event.release.url }} > Tests Set ${{ matrix.shard }}/${{ strategy.job-total }} ${{ steps.e2e_tests.outcome }}  :white_check_mark:",
                                 "emoji": true
                               }
                             }
