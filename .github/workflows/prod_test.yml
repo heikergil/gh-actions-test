@@ -7,7 +7,6 @@ on:
 jobs:
     test:
         name: E2E tests
-        needs: build
         timeout-minutes: 30
         runs-on: ubuntu-latest
         steps:
@@ -56,7 +55,7 @@ jobs:
                               "type": "section",
                               "text": {
                                 "type": "mrkdwn",
-                                "text": "<Release: ${{ github.event.release.url }} | ${{ github.event.release.tag_name }} - ${{ github.event.release.name }}> Prod E2E tests ${{ steps.e2e_tests.outcome }} :white_check_mark:"
+                                "text": "<${{ github.event.release.url }} | Release: ${{ github.event.release.tag_name }} - ${{ github.event.release.name }}> Prod E2E tests ${{ steps.e2e_tests.outcome }} :white_check_mark:"
                               }
                             }
                           ]
