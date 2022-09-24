@@ -79,7 +79,7 @@ jobs:
               env:
                   CI: true
                   PROD: true
-              run: npx playwright test --grep @homepage --shard=${{ matrix.shard }}/${{ strategy.job-total }}
+              run: npx playwright test --grep @smoke --shard=${{ matrix.shard }}/${{ strategy.job-total }}
 
             - name: Post to a Slack channel
               id: slack
