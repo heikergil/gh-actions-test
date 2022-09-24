@@ -4,9 +4,37 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx playwright test e2e/tests/local --grep-invert @launch --workers=1",
+    "test:prod": "PROD=true npx playwright test e2e/tests/local --grep-invert @launch --workers=1 --headed",
+    "test:buildflow": "npx playwright test e2e/tests/local --grep @buildflow --workers=1",
+    "test:buildflow:headed": "npx playwright test e2e/tests/local --grep @buildflow --workers=1 --headed",
+    "prod:buildflow": "PROD=true npx playwright test e2e/tests/local --grep @buildflow --workers=1",
+    "prod:buildflow:headed": "PROD=true npx playwright test e2e/tests/local --grep @buildflow --workers=1 --headed",
+    "test:smoke": "npx playwright test e2e/tests/local --grep @smoke --workers=1",
+    "test:cart": "npx playwright test e2e/tests/local --grep @cart --workers=1",
+    "test:cart:headed": "npx playwright test e2e/tests/local --grep @cart --workers=1 --headed",
+    "prod:cart": "PROD=true npx playwright test e2e/tests/local --grep @cart --workers=1",
+    "prod:cart:headed": "PROD=true npx playwright test e2e/tests/local --grep @cart --workers=1 --headed",
+    "test:homepage": "npx playwright test e2e/tests/local --grep @homepage --workers=1",
+    "test:homepage:headed": "npx playwright test e2e/tests/local --grep @homepage --workers=1 --headed",
+    "prod:homepage": "PROD=true npx playwright test e2e/tests/local --grep @homepage --workers=1 --headed",
+    "prod:homepage:headed": "PROD=true npx playwright test e2e/tests/local --grep @homepage --workers=1 --headed",
+    "test:launch": "npx playwright test e2e/tests/local --grep @launch --workers=1",
+    "test:launch:headed": "npx playwright test e2e/tests/local --grep @launch --workers=1 --headed",
+    "test:headed": "npx playwright test e2e/tests/loca  --grep-invert @launch  --workers=1 --headed",
+    "test:accounts": "npx playwright test e2e/tests/local --grep @accounts --workers=1",
+    "test:accounts:headed": "npx playwright test e2e/tests/local --grep @accounts --workers=1 --headed",
+    "prod:accounts": "PROD=true npx playwright test e2e/tests/local --grep @accounts --workers=1",
+    "prod:accounts:headed": "PROD=true npx playwright test e2e/tests/local --grep @accounts --workers=1 --headed"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.26.0"
+  },
+  "dependencies": {
+    "dot-env": "^0.0.1",
+    "dotenv": "^16.0.2"
+  }
 }
