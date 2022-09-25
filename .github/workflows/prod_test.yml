@@ -39,6 +39,9 @@ jobs:
                   PROD: true
               run: npx playwright test --grep @smoke --shard=${{ matrix.shard }}/${{ strategy.job-total }}
 
+            - name: echo
+              run: echo ${{ github.event.release }}    
+
             - name: Post to a Slack channel
               id: slack
               uses: slackapi/slack-github-action@v1.22.0
@@ -55,7 +58,7 @@ jobs:
                               "type": "section",
                               "text": {
                                 "type": "mrkdwn",
-                                "text": "<${{ github.event }} | Release: ${{ github.event.release.tag_name }} - ${{ github.event.release.name }}> Prod E2E tests ${{ steps.e2e_tests.outcome }} :white_check_mark:"
+                                "text": "<${{ github.event.release }} | Release: ${{ github.event.release.tag_name }} - ${{ github.event.release.name }}> Prod E2E tests ${{ steps.e2e_tests.outcome }} :white_check_mark:"
                               }
                             }
                           ]
