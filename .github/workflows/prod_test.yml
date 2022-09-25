@@ -58,7 +58,7 @@ jobs:
                               "type": "section",
                               "text": {
                                 "type": "mrkdwn",
-                                "text": "<${{ github.event.release }} | Release: ${{ github.event.release.tag_name }} - ${{ github.event.release.name }}> Prod E2E tests ${{ steps.e2e_tests.outcome }} :white_check_mark:"
+                                "text": "<https://github.com/heikergil/gh-actions-test/releases/latest | Live Theme E2E tests> E2E tests ${{ steps.e2e_tests.outcome }} :white_check_mark:"
                               }
                             }
                           ]
