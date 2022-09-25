@@ -10,7 +10,7 @@
     "test:buildflow:headed": "npx playwright test e2e/tests/local --grep @buildflow --workers=1 --headed",
     "prod:buildflow": "PROD=true npx playwright test e2e/tests/local --grep @buildflow --workers=1",
     "prod:buildflow:headed": "PROD=true npx playwright test e2e/tests/local --grep @buildflow --workers=1 --headed",
-    "test:smoke": "npx playwright test e2e/tests/local --grep @smoke --workers=1",
+    "test:smoke": "npx playwright test e2e/tests/local --grep @smoke",
     "test:cart": "npx playwright test e2e/tests/local --grep @cart --workers=1",
     "test:cart:headed": "npx playwright test e2e/tests/local --grep @cart --workers=1 --headed",
     "prod:cart": "PROD=true npx playwright test e2e/tests/local --grep @cart --workers=1",
