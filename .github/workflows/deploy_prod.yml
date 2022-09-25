@@ -38,9 +38,28 @@ jobs:
                   key: playwright-${{ hashFiles('package-lock.json') }}
 
             - name: Install Playwright Browsers
+              id: theme-build
               if: steps.cache-playwright.outputs.cache-hit != 'true'
-              run: npx playwright install --with-deps chromium            
+              run: npx playwright install --with-deps chromium     
 
+            - name: Post to a Slack channel
+              uses: slackapi/slack-github-action@v1.22.0
+              with:
+                channel-id: 'test-workflow'
+                payload: |
+                        {
+                          "blocks": [
+                            {
+                              "type": "section",
+                              "text": {
+                                "type": "mrkdwn",
+                                "text": "<${{ github.event.release.url }} | Release: ${{ github.event.release.tag_name }} - ${{ github.event.release.name }}> ${{ fromJSON('{"failure": "Build Failed :red_circle:", "success": "Build Completed :large_green_circle:"}')[ steps.theme-build.outcome ]"
+                              }
+                            }
+                          ]
+                        }
+              env:
+                SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
 
     test:
@@ -102,45 +121,45 @@ jobs:
                 SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
 
-    # deploy:
-    #     name: publish shopify theme
-    #     needs: [build, test]
-    #     timeout-minutes: 30
-    #     runs-on: ubuntu-latest
-    #     steps:
-    #         - uses: actions/checkout@v2
-    #         - name: Cache node_modules
-    #           uses: actions/cache@v3
-    #           id: cache-node-modules
-    #           with:
-    #               path: |
-    #                   node_modules
-    #               key: modules-${{ hashFiles('package-lock.json') }}
+    deploy:
+        name: publish shopify theme
+        needs: [build, test]
+        timeout-minutes: 30
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Cache node_modules
+              uses: actions/cache@v3
+              id: cache-node-modules
+              with:
+                  path: |
+                      node_modules
+                  key: modules-${{ hashFiles('package-lock.json') }}
 
-    #         - name: Post to a Slack channel
-    #           id: slack
-    #           uses: slackapi/slack-github-action@v1.22.0
-    #           with:
-    #             # Slack channel id, channel name, or user id to post message.
-    #             # See also: https://api.slack.com/methods/chat.postMessage#channels
-    #             # You can pass in multiple channels to post to by providing a comma-delimited list of channel IDs.
-    #             channel-id: 'test-workflow'
-    #             # For posting a simple plain text message
-    #             payload: |
-    #                     {
-    #                       "blocks": [
-    #                         {
-    #                           "type": "section",
-    #                           "text": {
-    #                             "type": "plain_text",
-    #                             "text": "<${{ github.event.release.url }} | Release: ${{ github.event.release.tag_name }} - ${{ github.event.release.name }}> is Live :tada:",
-    #                             "emoji": true
-    #                           }
-    #                         }
-    #                       ]
-    #                     }
-    #           env:
-    #             SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+            - name: Post to a Slack channel
+              id: slack
+              uses: slackapi/slack-github-action@v1.22.0
+              with:
+                # Slack channel id, channel name, or user id to post message.
+                # See also: https://api.slack.com/methods/chat.postMessage#channels
+                # You can pass in multiple channels to post to by providing a comma-delimited list of channel IDs.
+                channel-id: 'test-workflow'
+                # For posting a simple plain text message
+                payload: |
+                        {
+                          "blocks": [
+                            {
+                              "type": "section",
+                              "text": {
+                                "type": "plain_text",
+                                "text": "<${{ github.event.release.url }} | Release: ${{ github.event.release.tag_name }} - ${{ github.event.release.name }}> is Live :tada:",
+                                "emoji": true
+                              }
+                            }
+                          ]
+                        }
+              env:
+                SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
   
 
 
