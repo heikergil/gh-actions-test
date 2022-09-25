@@ -51,7 +51,7 @@ jobs:
                               "type": "section",
                               "text": {
                                 "type": "mrkdwn",
-                                "text": "<${{github.event.workflow_run.}} | Release: > ${{ fromJSON('{"failure": "E2E tests failed  :test_tube::red_circle:", "success": "E2E tests success :test_tube::large_green_circle:"}')[ steps.e2e_tests.outcome ] }}"
+                                "text": "<${{github.event.workflow_run.url}} | ${{ fromJSON('{"failure": "Live Theme E2E Tests Failed  :test_tube::red_circle:", "success": "Live Theme E2E Tests Success :test_tube::large_green_circle:"}')[ steps.e2e_tests.outcome ] }}>"
                               }
                             }
                           ]
