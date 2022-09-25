@@ -20,27 +20,25 @@ jobs:
                       node_modules
                   key: modules-${{ hashFiles('package-lock.json') }}
 
-            # - name: Cache Playwright
-            #   uses: actions/cache@v3
-            #   with:
-            #       path: |
-            #           ~/.cache/ms-playwright
-            #       key: playwright-${{ hashFiles('package-lock.json') }}
+            - name: Cache Playwright
+              uses: actions/cache@v3
+              with:
+                  path: |
+                      ~/.cache/ms-playwright
+                  key: playwright-${{ hashFiles('package-lock.json') }}
 
-            # - name: Install Playwright Browsers
-            #   if: steps.cache-playwright.outputs.cache-hit != 'true'
-            #   run: npx playwright install --with-deps chromium
+            - name: Install Playwright Browsers
+              if: steps.cache-playwright.outputs.cache-hit != 'true'
+              run: npx playwright install --with-deps chromium
 
-            # - name: Run e2e Tests on preview link
-            #   id: e2e_tests
-            #   continue-on-error: true
-            #   env:
-            #       CI: true
-            #       PROD: true
-            #   run: npx playwright test --grep @smoke --shard=${{ matrix.shard }}/${{ strategy.job-total }}
+            - name: Run e2e Tests on preview link
+              id: e2e_tests
+              continue-on-error: true
+              env:
+                  CI: true
+                  PROD: true
+              run: npx playwright test --grep @homepage
 
-            - name: echo
-              run: echo "${{ github.event.release }}"
 
             - name: Post to a Slack channel
               uses: slackapi/slack-github-action@v1.22.0
@@ -53,7 +51,7 @@ jobs:
                               "type": "section",
                               "text": {
                                 "type": "mrkdwn",
-                                "text": "<https://github.com/heikergil/gh-actions-test/releases/latest | Live Theme E2E tests> E2E tests ${{ steps.e2e_tests.outcome }} :performing_arts::white_check_mark:"
+                                "text": "<${{github.event.workflow_run.}} | Release: > ${{ fromJSON('{"failure": "E2E tests failed  :test_tube::red_circle:", "success": "E2E tests success :test_tube::large_green_circle:"}')[ steps.e2e_tests.outcome ] }}"
                               }
                             }
                           ]

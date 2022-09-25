@@ -112,7 +112,7 @@ jobs:
                               "type": "section",
                               "text": {
                                 "type": "mrkdwn",
-                                "text": "<${{ github.event.release.url }} | Release: ${{ github.event.release.tag_name }} - ${{ github.event.release.name }}> Tests Set ${{ matrix.shard }}/${{ strategy.job-total }} ${{ steps.e2e_tests.outcome }} ${{ fromJSON('{"failure": ":test_tube::red_circle:", "success": ":test_tube::large_green_circle:"}')[ steps.e2e_tests.outcome ] }}"
+                                "text": "<${{ github.event.release.url }} | Release: ${{ github.event.release.tag_name }} - ${{ github.event.release.name }}> Tests Set ${{ matrix.shard }}/${{ strategy.job-total }} ${{ steps.e2e_tests.outcome }} ${{ fromJSON('{"failure": "  :test_tube::red_circle:", "success": ":test_tube::large_green_circle:"}')[ steps.e2e_tests.outcome ] }}"
                               }
                             }
                           ]
