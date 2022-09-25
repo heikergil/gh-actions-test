@@ -53,7 +53,7 @@ jobs:
                               "type": "section",
                               "text": {
                                 "type": "mrkdwn",
-                                "text": "<${{ github.event.release.url }} | Release: ${{ github.event.release.tag_name }} - ${{ github.event.release.name }}> ${{ fromJSON('{"failure": "Build Failed :red_circle:", "success": "Build Completed :large_green_circle:"}')[ steps.theme_build.outcome ] }}"
+                                "text": "<${{ github.event.release.url }} | Release: ${{ github.event.release.tag_name }} - ${{ github.event.release.name }}> ${{ fromJSON('{"failure": "Build Failed :gear::red_circle:", "success": "Build Completed :gear::large_green_circle:"}')[ steps.theme_build.outcome ] }}"
                               }
                             }
                           ]
@@ -112,7 +112,7 @@ jobs:
                               "type": "section",
                               "text": {
                                 "type": "mrkdwn",
-                                "text": "<${{ github.event.release.url }} | Release: ${{ github.event.release.tag_name }} - ${{ github.event.release.name }}> Tests Set ${{ matrix.shard }}/${{ strategy.job-total }} ${{ steps.e2e_tests.outcome }} ${{ fromJSON('{"failure": ":red_circle:", "success": ":large_green_circle:"}')[ steps.e2e_tests.outcome ] }}"
+                                "text": "<${{ github.event.release.url }} | Release: ${{ github.event.release.tag_name }} - ${{ github.event.release.name }}> Tests Set ${{ matrix.shard }}/${{ strategy.job-total }} ${{ steps.e2e_tests.outcome }} ${{ fromJSON('{"failure": ":test_tube::red_circle:", "success": ":test_tube::large_green_circle:"}')[ steps.e2e_tests.outcome ] }}"
                               }
                             }
                           ]
@@ -151,9 +151,8 @@ jobs:
                             {
                               "type": "section",
                               "text": {
-                                "type": "plain_text",
-                                "text": "<${{ github.event.release.url }} | Release: ${{ github.event.release.tag_name }} - ${{ github.event.release.name }}> is Live :tada:",
-                                "emoji": true
+                                "type": "mrkdwn",
+                                "text": "<${{ github.event.release.url }} | Release: ${{ github.event.release.tag_name }} - ${{ github.event.release.name }}> is Live :ship::tada:"
                               }
                             }
                           ]

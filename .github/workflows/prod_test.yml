@@ -43,14 +43,9 @@ jobs:
               run: echo "${{ github.event.release }}"
 
             - name: Post to a Slack channel
-              id: slack
               uses: slackapi/slack-github-action@v1.22.0
               with:
-                # Slack channel id, channel name, or user id to post message.
-                # See also: https://api.slack.com/methods/chat.postMessage#channels
-                # You can pass in multiple channels to post to by providing a comma-delimited list of channel IDs.
                 channel-id: 'test-workflow'
-                # For posting a simple plain text message
                 payload: |
                         {
                           "blocks": [
@@ -58,7 +53,7 @@ jobs:
                               "type": "section",
                               "text": {
                                 "type": "mrkdwn",
-                                "text": "<https://github.com/heikergil/gh-actions-test/releases/latest | Live Theme E2E tests> E2E tests ${{ steps.e2e_tests.outcome }} :white_check_mark:"
+                                "text": "<https://github.com/heikergil/gh-actions-test/releases/latest | Live Theme E2E tests> E2E tests ${{ steps.e2e_tests.outcome }} :performing_arts::white_check_mark:"
                               }
                             }
                           ]
