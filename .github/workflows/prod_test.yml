@@ -55,7 +55,7 @@ jobs:
                               "type": "section",
                               "text": {
                                 "type": "mrkdwn",
-                                "text": "<${{ github.event.release.url }} | Release: ${{ github.event.release.tag_name }} - ${{ github.event.release.name }}> Prod E2E tests ${{ steps.e2e_tests.outcome }} :white_check_mark:"
+                                "text": "<${{ github.event }} | Release: ${{ github.event.release.tag_name }} - ${{ github.event.release.name }}> Prod E2E tests ${{ steps.e2e_tests.outcome }} :white_check_mark:"
                               }
                             }
                           ]
