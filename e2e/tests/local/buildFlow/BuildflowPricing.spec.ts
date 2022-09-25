@@ -1,7 +1,7 @@
 import { test, expect, Page } from '@playwright/test'
 import BuildFlow from '../../../page/buildFlow';
 
-test.describe.serial('Eyeglasses Buildflow pricing @buildflow', async () => {
+test.describe.serial('Eyeglasses Buildflow pricing @buildflow @smoke', async () => {
 	let page: Page;
 	let buildFlow: BuildFlow;
 	let prices: {};
