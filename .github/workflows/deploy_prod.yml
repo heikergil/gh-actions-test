@@ -43,68 +43,63 @@ jobs:
 
 
 
-    # test:
-    #     name: E2E tests
-    #     needs: build
-    #     timeout-minutes: 30
-    #     runs-on: ubuntu-latest
-    #     strategy:
-    #         fail-fast: false
-    #         matrix:
-    #             shard: [1, 2, 3]
-    #     steps:
-    #         - uses: actions/checkout@v3
-    #         - uses: actions/setup-node@v3
+    test:
+        name: E2E tests
+        needs: build
+        timeout-minutes: 30
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                shard: [1, 2, 3]
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
 
-    #         - name: Cache node_modules
-    #           uses: actions/cache@v3
-    #           with:
-    #               path: |
-    #                   node_modules
-    #               key: modules-${{ hashFiles('package-lock.json') }}
+            - name: Cache node_modules
+              uses: actions/cache@v3
+              with:
+                  path: |
+                      node_modules
+                  key: modules-${{ hashFiles('package-lock.json') }}
 
-    #         - name: Cache Playwright
-    #           uses: actions/cache@v3
-    #           with:
-    #               path: |
-    #                   ~/.cache/ms-playwright
-    #               key: playwright-${{ hashFiles('package-lock.json') }}
+            - name: Cache Playwright
+              uses: actions/cache@v3
+              with:
+                  path: |
+                      ~/.cache/ms-playwright
+                  key: playwright-${{ hashFiles('package-lock.json') }}
 
-    #         - name: Install Playwright Browsers
-    #           if: steps.cache-playwright.outputs.cache-hit != 'true'
-    #           run: npx playwright install --with-deps chromium
+            - name: Install Playwright Browsers
+              if: steps.cache-playwright.outputs.cache-hit != 'true'
+              run: npx playwright install --with-deps chromium
 
-    #         - name: Run e2e Tests on preview link
-    #           id: e2e_tests
-    #           continue-on-error: true
-    #           env:
-    #               CI: true
-    #               PROD: true
-    #           run: npx playwright test --grep @smoke --shard=${{ matrix.shard }}/${{ strategy.job-total }}
+            - name: Run e2e Tests on preview link
+              id: e2e_tests
+              continue-on-error: true
+              env:
+                  CI: true
+                  PROD: true
+              run: npx playwright test --grep @smoke --shard=${{ matrix.shard }}/${{ strategy.job-total }}
 
-    #         - name: Post to a Slack channel
-    #           id: slack
-    #           uses: slackapi/slack-github-action@v1.22.0
-    #           with:
-    #             # Slack channel id, channel name, or user id to post message.
-    #             # See also: https://api.slack.com/methods/chat.postMessage#channels
-    #             # You can pass in multiple channels to post to by providing a comma-delimited list of channel IDs.
-    #             channel-id: 'test-workflow'
-    #             # For posting a simple plain text message
-    #             payload: |
-    #                     {
-    #                       "blocks": [
-    #                         {
-    #                           "type": "section",
-    #                           "text": {
-    #                             "type": "mrkdwn",
-    #                             "text": "<${{ github.event.release.url }} | Release: ${{ github.event.release.tag_name }} - ${{ github.event.release.name }}> Tests Set ${{ matrix.shard }}/${{ strategy.job-total }} ${{ steps.e2e_tests.outcome }}  :white_check_mark:"
-    #                           }
-    #                         }
-    #                       ]
-    #                     }
-    #           env:
-    #             SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+            - name: Post to a Slack channel
+              uses: slackapi/slack-github-action@v1.22.0
+              with:
+                channel-id: 'test-workflow'
+                payload: |
+                        {
+                          "blocks": [
+                            {
+                              "type": "section",
+                              "text": {
+                                "type": "mrkdwn",
+                                "text": "<${{ github.event.release.url }} | Release: ${{ github.event.release.tag_name }} - ${{ github.event.release.name }}> Tests Set ${{ matrix.shard }}/${{ strategy.job-total }} ${{ steps.e2e_tests.outcome }} fromJSON('{"false": ":red_circle:", "true": ":large_green_circle:"}')[${{steps.e2e_tests.outcome}} == 'success'] :white_check_mark:"
+                              }
+                            }
+                          ]
+                        }
+              env:
+                SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
 
     # deploy:
