@@ -25,6 +25,9 @@ jobs:
                       ~/.cache/ms-playwright
                   key: playwright-${{ hashFiles('package-lock.json') }}
 
+            - name: Echo github obj
+              run: echo ${{ toJson(github) }}
+              
             - name: Install Playwright Browsers
               if: steps.cache-playwright.outputs.cache-hit != 'true'
               run: npx playwright install --with-deps chromium
@@ -49,7 +52,7 @@ jobs:
                               "type": "section",
                               "text": {
                                 "type": "mrkdwn",
-                                "text": "<${{github.event.workflow_dispatch.ref}} | ${{ fromJSON('{"failure": "Live Theme E2E Tests Failed  :test_tube::red_circle:", "success": "Live Theme E2E Tests Success :test_tube::large_green_circle:"}')[ steps.e2e_tests.outcome ] }}>"
+                                "text": "<${{github.event_name.workflow_dispatch.ref}} | ${{ fromJSON('{"failure": "Live Theme E2E Tests Failed  :test_tube::red_circle:", "success": "Live Theme E2E Tests Success :test_tube::large_green_circle:"}')[ steps.e2e_tests.outcome ] }}>"
                               }
                             }
                           ]
