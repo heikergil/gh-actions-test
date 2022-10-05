@@ -1,6 +1,9 @@
 name: Prod test
+
 on:
-    workflow_dispatch:
+  pull_request:
+    branches:
+      - main
       
 jobs:
     test:
@@ -25,11 +28,6 @@ jobs:
                       ~/.cache/ms-playwright
                   key: playwright-${{ hashFiles('package-lock.json') }}
 
-            - name: Check object
-              run: |
-                cat << OBJECT
-                ${{ toJson(github) }}
-                OBJECT
 
             - name: Install Playwright Browsers
               if: steps.cache-playwright.outputs.cache-hit != 'true'
@@ -43,23 +41,4 @@ jobs:
                   PROD: true
               run: npx playwright test --grep @homepage
 
-
-            - name: Post to a Slack channel
-              uses: slackapi/slack-github-action@v1.22.0
-              with:
-                channel-id: 'test-workflow'
-                payload: |
-                        {
-                          "blocks": [
-                            {
-                              "type": "section",
-                              "text": {
-                                "type": "mrkdwn",
-                                "text": "<${{github.event.repository.html_url}} | ${{ fromJSON('{"failure": "Live Theme E2E Tests Failed  :test_tube::x:", "success": "Live Theme E2E Tests Success :test_tube::large_green_circle:"}')[ steps.e2e_tests.outcome ] }}>"
-                              }
-                            }
-                          ]
-                        }
-              env:
-                SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
             

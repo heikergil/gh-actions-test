@@ -95,13 +95,14 @@ jobs:
 
             - name: Run e2e Tests on preview link
               id: e2e_tests
-              continue-on-error: true
+              continue-on-error: false
               env:
                   CI: true
                   PROD: true
               run: npx playwright test --grep @smoke --shard=${{ matrix.shard }}/${{ strategy.job-total }}
 
             - name: Post to a Slack channel
+              if: always()
               uses: slackapi/slack-github-action@v1.22.0
               with:
                 channel-id: 'test-workflow'
