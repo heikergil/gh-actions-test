@@ -2,7 +2,7 @@ name: Deployment tests
 on:
   pull_request:
     branches:
-      - main
+      - master
 jobs:
     test:
         name: E2E tests

@@ -3,7 +3,7 @@ name: Prod test
 on:
   push:
     branches:
-      - main
+      - master
 jobs:
     test:
         name: E2E tests
