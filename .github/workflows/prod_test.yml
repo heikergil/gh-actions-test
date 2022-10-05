@@ -1,10 +1,8 @@
-name: Prod test
-
+name: Deployment tests
 on:
   pull_request:
     branches:
-      - main
-      #hello
+      - master
 jobs:
     test:
         name: E2E tests
