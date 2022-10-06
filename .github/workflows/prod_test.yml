@@ -18,7 +18,10 @@ jobs:
                   path: |
                       node_modules
                   key: modules-${{ hashFiles('package-lock.json') }}
-            - name: echo something
-              run: echo ${{github.event.workflow_run.workflow.html_url}}
+            - name: Dump GitHub context
+              env:
+                GITHUB_CONTEXT: ${{ toJson(github) }}
+              run: |
+                echo "$GITHUB_CONTEXT"
 
             
