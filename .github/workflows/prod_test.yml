@@ -1,8 +1,8 @@
 name: Deployment tests
 on:
-  pull_request:
-    branches:
-      - master
+  workflow_run:
+    workflows: ["Prod test"]
+    types: [completed]
 jobs:
     test:
         name: E2E tests
@@ -18,25 +18,7 @@ jobs:
                   path: |
                       node_modules
                   key: modules-${{ hashFiles('package-lock.json') }}
-
-            - name: Cache Playwright
-              uses: actions/cache@v3
-              with:
-                  path: |
-                      ~/.cache/ms-playwright
-                  key: playwright-${{ hashFiles('package-lock.json') }}
-
-
-            - name: Install Playwright Browsers
-              if: steps.cache-playwright.outputs.cache-hit != 'true'
-              run: npx playwright install --with-deps chromium
-
-            - name: Run e2e Tests on preview link
-              id: e2e_tests
-              continue-on-error: true
-              env:
-                  CI: true
-                  PROD: true
-              run: npx playwright test --grep @homepage
+            - name: echo something
+              run: echo ${{github.event.workflow_run.workflow.html_url}}
 
             
