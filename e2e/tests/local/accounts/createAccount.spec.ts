@@ -10,6 +10,7 @@ test.describe.serial('Create account flow @accounts', async () => {
 
 	test.beforeAll(async ({ browser, baseURL }) => {
 		const context = await browser.newContext();
+        // await context.addCookies([{name:'__kla_id',value:'',path:'/', domain:'pair-eyewear.myshopify.com'}])
         page = await context.newPage();
         accountsPage = new AccountsPage(page, baseURL)
         homepage = new Homepage(page, baseURL)

@@ -3,13 +3,13 @@ const preview_theme_id = process.env.THEME_ID
 
 export default async function handlePreviewBar_util(page: Page, localUrl: string) {
 
-    if( typeof(process.env.PROD) === 'undefined' ) {
+    if( typeof(process.env.PROD) === 'undefined') {
         page.route(localUrl, route => {
             const requestURL = route.request().url();
             if (route.request().resourceType() === 'document' && requestURL.includes('?')) {
-                return route.continue({ url: route.request().url() + `&preview_theme_id=${preview_theme_id}&pb=0`});
+                return route.continue({ url: route.request().url() + `&preview_theme_id=${preview_theme_id}&pb=0&pu=0`});
             } else if (route.request().resourceType() === 'document' && !requestURL.includes('?')) {
-                return route.continue({ url: route.request().url() + `?preview_theme_id=${preview_theme_id}&pb=0` });
+                return route.continue({ url: route.request().url() + `?preview_theme_id=${preview_theme_id}&pb=0&pu=0` });
             }
         });
 
@@ -23,18 +23,18 @@ export default async function handlePreviewBar_util(page: Page, localUrl: string
             }
     
             if (route.request().resourceType() === 'document' && requestURL.includes('?')) {
-                return route.continue({ url: route.request().url() + `&preview_theme_id=${preview_theme_id}&pb=0`});
+                return route.continue({ url: route.request().url() + `&preview_theme_id=${preview_theme_id}&pb=0&pu=0`});
             } else if (route.request().resourceType() === 'document' && !requestURL.includes('?')) {
-                return route.continue({ url: route.request().url() + `?preview_theme_id=${preview_theme_id}&pb=0` });
+                return route.continue({ url: route.request().url() + `?preview_theme_id=${preview_theme_id}&pb=0&pu=0` });
             }
         });
     
         page.route(localUrl + 'preview_bar/*', route => {
             const requestURL = route.request().url();
             if (route.request().resourceType() === 'document' && requestURL.includes('?')) {
-                return route.continue({ url: route.request().url() + `&preview_theme_id=${preview_theme_id}&pb=0` });
+                return route.continue({ url: route.request().url() + `&preview_theme_id=${preview_theme_id}&pb=0&pu=0` });
             } else if (route.request().resourceType() === 'document' && !requestURL.includes('?')) {
-                return route.continue({ url: route.request().url() + `?preview_theme_id=${preview_theme_id}&pb=0` });
+                return route.continue({ url: route.request().url() + `?preview_theme_id=${preview_theme_id}&pb=0&pu=0` });
             } else {route.continue()}
         });
 
@@ -44,9 +44,9 @@ export default async function handlePreviewBar_util(page: Page, localUrl: string
                 return route.abort()
             } 
             if (route.request().resourceType() === 'document' && requestURL.includes('?')) {
-                return route.continue({ url: route.request().url() + `&preview_theme_id=${preview_theme_id}&pb=0` });
+                return route.continue({ url: route.request().url() + `&preview_theme_id=${preview_theme_id}&pb=0&pu=0` });
             } else if (route.request().resourceType() === 'document' && !requestURL.includes('?')) {
-                return route.continue({ url: route.request().url() + `?preview_theme_id=${preview_theme_id}&pb=0` });
+                return route.continue({ url: route.request().url() + `?preview_theme_id=${preview_theme_id}&pb=0&pu=0&pu=0` });
             }
         });
 

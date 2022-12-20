@@ -57,8 +57,8 @@ export default class PLPpage {
     }
 
     async handlePopUp() {
-        await this.popUpCloseBtn.scrollIntoViewIfNeeded()
-		await this.popUpCloseBtn.click();
+        // await this.popUpCloseBtn.scrollIntoViewIfNeeded()
+		// await this.popUpCloseBtn.click();
 	}
 
 }

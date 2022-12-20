@@ -9,6 +9,7 @@ test.describe.serial('PLPs and PDPs @plps', async () => {
 	test.beforeAll(async ({ baseURL, browser }) => {
 		const context = await browser.newContext();
         page = await context.newPage();
+        // await context.addCookies([{name:'__kla_id',value:'',path:'/', domain:'pair-eyewear.myshopify.com'}])
         plpPage = new PLPpage(page, baseURL)
 	});
 

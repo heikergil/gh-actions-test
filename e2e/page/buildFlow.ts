@@ -114,8 +114,15 @@ export default class BuildFlow {
 	}
 
 	async handlePopUp() {
-		await this.popUpCloseBtn.scrollIntoViewIfNeeded()
-		await this.popUpCloseBtn.click();
+		// await this.popUpCloseBtn.scrollIntoViewIfNeeded()
+		// await this.popUpCloseBtn.click();
+	}
+
+	async isBfReorder(page: Page) {
+	 const bfReorder = await page.evaluate(async function(){
+			return window.bfReorder
+		});
+		return bfReorder
 	}
 
 	private async navigateTo(locator: Locator) {
@@ -134,7 +141,7 @@ export default class BuildFlow {
 		return products[Math.floor(Math.random() * products.length)].split(' ').pop();
 	}
 	async goToShopWomen() {
-		await this.page.goto(this.localUrl + this.shopWomen, { waitUntil: 'networkidle' });
+		await this.page.goto(this.localUrl + this.shopWomen, { waitUntil: 'load' });
 	}
 	async goToShopMen() {
 		await this.page.goto(this.localUrl + this.shopWomen, { waitUntil: 'load' });
@@ -170,13 +177,13 @@ export default class BuildFlow {
 		if (frameTitle === 'Kirby') {
 			await this.page.locator(`//a[normalize-space()='Design Your ${frameTitle}']`).nth(1).scrollIntoViewIfNeeded()
 		await Promise.all([
-			this.page.waitForNavigation(),
+			this.page.waitForNavigation({'waitUntil':'load'}),
 			this.page.locator(`//a[normalize-space()='Design Your ${frameTitle}']`).nth(1).click(),
 		]);
 		} else {
 			await this.page.locator(`//a[normalize-space()='Design Your ${frameTitle}']`).nth(0).scrollIntoViewIfNeeded()
 		await Promise.all([
-			this.page.waitForNavigation(),
+			this.page.waitForNavigation({'waitUntil':'load'}),
 			this.page.locator(`//a[normalize-space()='Design Your ${frameTitle}']`).nth(0).click(),
 		]);
 		}

@@ -9,6 +9,7 @@ test.describe.serial('User tries to Log In with invalid credentials @accounts', 
 	test.beforeAll(async ({ browser, baseURL }) => {
 		const context = await browser.newContext();
         page = await context.newPage();
+        // await context.addCookies([{name:'__kla_id',value:'',path:'/', domain:'pair-eyewear.myshopify.com'}])
         accountsPage = new AccountsPage(page, baseURL)
         homepage = new Homepage(page, baseURL)
 	});

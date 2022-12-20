@@ -51,6 +51,8 @@ export default class AccountsPage {
     readonly myCollections: Locator
     readonly myRewards: Locator
     readonly linkToMyCollections: Locator
+    readonly lihpCTA: Locator
+    readonly lihpGreetingsEmptyAccount: Locator
 
 
 
@@ -102,6 +104,9 @@ export default class AccountsPage {
         this.myCollectionTab = page.locator("//div[normalize-space()='My Collection']")
         this.accountIconMobile = page.locator("div[data-test='account']")
         this.linkToMyCollections = page.locator("//span[normalize-space()='My Collections']")
+        this.lihpCTA = page.locator("//h1[normalize-space()='Express yourself with some new top frames!']")
+        this.lihpGreetingsEmptyAccount = page.locator("//p[normalize-space()='Welcome back, Empty!']")
+
 
         }
 
@@ -134,7 +139,7 @@ export default class AccountsPage {
 
     async goToAccountPage() {
         await this.openAccountMenu()
-        await this.navigateTo(this.myCollections)
+        await this.navigateTo(this.linkToMyCollections)
     }
 
     async visitAllTopsFromAccountPage() {
@@ -160,8 +165,8 @@ export default class AccountsPage {
     }
 
 	async handlePopUp() {
-         await this.popUpCloseBtn.scrollIntoViewIfNeeded()
-		await this.popUpCloseBtn.click();
+        //  await this.popUpCloseBtn.scrollIntoViewIfNeeded()
+		// await this.popUpCloseBtn.click();
 	}
 
     async goToCreateAccount() {

@@ -7,6 +7,7 @@ test.describe.serial('Home Page tests @homepage @smoke', async () => {
 	test.beforeAll(async ({ browser, baseURL }) => {
 		const context = await browser.newContext();
 		page = await context.newPage();
+		// await context.addCookies([{name:'__kla_id',value:'',path:'/', domain:'pair-eyewear.myshopify.com'}])
 		homepage = new Homepage(page, baseURL);
 		await homepage.handlePreviewBar()
 		await page.goto(homepage.localUrl, {waitUntil: 'load'} );
@@ -35,7 +36,7 @@ test.describe.serial('Home Page tests @homepage @smoke', async () => {
 		await expect.soft(homepage.sunglassesShopKids).toBeVisible();
 	});
 
-	test('Customer Should see an empty cart before adding items', async ({}) => {
+	test.skip('Customer Should see an empty cart before adding items', async ({}) => {
 		await homepage.clickMyCartIcon();
 		expect.soft(await homepage.returnMyCartValue()).toBe(0);
 		expect.soft(await homepage.returnMyCartSubtotal()).toBe(0);

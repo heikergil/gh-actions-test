@@ -102,8 +102,8 @@ export default class CartPage {
 	}
 
 	async handlePopUp() {
-		await this.popUpCloseBtn.scrollIntoViewIfNeeded()
-		await this.popUpCloseBtn.click();
+		// await this.popUpCloseBtn.scrollIntoViewIfNeeded()
+		// await this.popUpCloseBtn.click();
 	}
 
 	async returnCartPageTotalPrice(): Promise<number> {

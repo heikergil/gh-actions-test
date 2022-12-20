@@ -5,7 +5,7 @@ require('dotenv').config();
 const config: PlaywrightTestConfig = {
 	testDir: './e2e/tests',
 	/* Maximum time one test can run for. */
-	timeout: 180 * 1000,
+	timeout: 90 * 1000,
 	expect: {
 		/**
 		 * Maximum time expect() should wait for the condition to be met.
@@ -16,7 +16,7 @@ const config: PlaywrightTestConfig = {
 	/* Fail the build on CI if you accidentally left test.only in the source code. */
 	forbidOnly: !!process.env.CI,
 	/* Retry on CI only */
-	retries: 0,
+	retries: 4,
 	/* Opt out of parallel tests on CI. */
 	workers: process.env.CI ? 1 : 1,
 	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -30,7 +30,7 @@ const config: PlaywrightTestConfig = {
 	use: {
 		
 		/* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
-		actionTimeout:0,
+		actionTimeout:70000,
 		/* Base URL to use in actions like `await page.goto('/')`. */
 
 		 baseURL: process.env.PROD ? 'https://paireyewear.com/': 'https://pair-eyewear.myshopify.com/',
@@ -64,29 +64,29 @@ const config: PlaywrightTestConfig = {
 			use: {
 				...devices['Galaxy S8'],
 					  deviceScaleFactor: 2,
-						isMobile: false,
+						isMobile: true,
 						hasTouch: true,
 						headless: true
 			},
 		 },
-		// {
-		// 	name: 'Mobile Safari',
-		// 	use: {
-		// 		...devices['iPhone XR'],
-		// 		userAgent:
-		// 		'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/15.4 Mobile/15A372 Safari/604.1',
-		// 	  browserName: 'webkit',
-		// 	  headless: true,
-		// 	  viewport: {
-		// 		width: 375,
-		// 		height: 667,
-		// 	  },
-		// 	  deviceScaleFactor: 2,
-		// 	  isMobile: false,
-		// 	  hasTouch: true,
-		// 	  defaultBrowserType: 'webkit',
-		// 	},
-		//  },
+		{
+			name: 'Mobile Safari',
+			use: {
+				...devices['iPhone XR'],
+				userAgent:
+				'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/15.4 Mobile/15A372 Safari/604.1',
+			  browserName: 'webkit',
+			  headless: true,
+			  viewport: {
+				width: 375,
+				height: 667,
+			  },
+			  deviceScaleFactor: 2,
+			  isMobile: true,
+			  hasTouch: true,
+			  defaultBrowserType: 'webkit',
+			},
+		 },
 	],
 
 	/* Folder for test artifacts such as screenshots, videos, traces, etc. */

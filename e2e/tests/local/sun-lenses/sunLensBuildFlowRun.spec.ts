@@ -11,6 +11,7 @@ test.describe.serial('sunglasses @buildflow @buildflow', async () => {
 	test.beforeAll(async ({ browser, baseURL }) => {
 		const context = await browser.newContext();
 		page = await context.newPage();
+		// await context.addCookies([{name:'__kla_id',value:'',path:'/', domain:'pair-eyewear.myshopify.com'}])
 		buildFlow = new BuildFlow(page, baseURL);
 		cartPage = new CartPage(page, baseURL);
 		prices = buildFlow.prices;
@@ -28,15 +29,29 @@ test.describe.serial('sunglasses @buildflow @buildflow', async () => {
 		const productTitle = await buildFlow.returnFrameTitle();
 		await buildFlow.selectGreenReflective('The ' + productTitle);
 		await buildFlow.navigateToSunLensPDP(productTitle);
-		await buildFlow.clickChooseTopFramesBtn();
-		await buildFlow.clickSelectLensTypeBtn();
-		await buildFlow.clickNonPrescription();
-		await buildFlow.clickAddToCartBtn();
-		await expect.soft(page.locator('text=Sun Lens - Green Reflective Lens')).toBeVisible();
-		expect.soft(await cartPage.returnCartPageTotalPrice()).toBe(75);
-		expect.soft(await cartPage.returnCartPageItemCount()).toBe(2);
-		expect.soft(await cartPage.returnCartPageSubtotal()).toBe(75);
-		await expect.soft(await cartPage.returnFrameTitleLocator('The ' + productTitle)).toBeVisible();
+		const checkOrder = await buildFlow.isBfReorder(page)
+		if (checkOrder) {
+			await buildFlow.clickSelectLensTypeBtn();
+			await buildFlow.clickNonPrescription();
+			await buildFlow.clickChooseTopFramesBtn();
+			await buildFlow.clickAddToCartBtn();
+			await expect.soft(page.locator('text=Sun Lens - Green Reflective Lens')).toBeVisible();
+			expect.soft(await cartPage.returnCartPageTotalPrice()).toBe(75);
+			expect.soft(await cartPage.returnCartPageItemCount()).toBe(2);
+			expect.soft(await cartPage.returnCartPageSubtotal()).toBe(75);
+			await expect.soft(await cartPage.returnFrameTitleLocator('The ' + productTitle)).toBeVisible();
+		} else {
+			await buildFlow.clickChooseTopFramesBtn();
+			await buildFlow.clickSelectLensTypeBtn();
+			await buildFlow.clickNonPrescription();
+			await buildFlow.clickAddToCartBtn();
+			await expect.soft(page.locator('text=Sun Lens - Green Reflective Lens')).toBeVisible();
+			expect.soft(await cartPage.returnCartPageTotalPrice()).toBe(75);
+			expect.soft(await cartPage.returnCartPageItemCount()).toBe(2);
+			expect.soft(await cartPage.returnCartPageSubtotal()).toBe(75);
+			await expect.soft(await cartPage.returnFrameTitleLocator('The ' + productTitle)).toBeVisible();
+		}
+		
 	});
 });
 
