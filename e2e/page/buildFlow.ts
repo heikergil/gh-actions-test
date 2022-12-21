@@ -37,6 +37,7 @@ export default class BuildFlow {
 	readonly sunLensPath: string;
 	readonly greenReflective: Locator;
 	readonly addToCartBtnbyText: Locator
+	readonly removeButton: Locator
 
 	constructor(page: Page, baseURL: string) {
 		this.page = page;
@@ -60,7 +61,8 @@ export default class BuildFlow {
 		this.addToCart = page.locator("span:has-text('Add to Cart')");
 		this.chooseTopFramesBtn = page.locator('button:has-text("Choose Top Frames")');
 		this.currentCollectionsTops = page.locator("(//*[@data-collection])[1]").locator("//div//li");
-		this.currentCollectionsTopsBtn = page.locator("(//*[@data-collection])[1]").locator("//button");
+		this.currentCollectionsTopsBtn = page.locator("(//*[@data-collection])[1]").locator("//button[@data-added]");
+		this.removeButton = page.locator("(//*[@data-collection])[1]").locator("//button[@data-delete-top]")
 		this.currentCollectionsTopsTitles = page.locator("(//*[@data-collection])[1]").locator("//div//li//p");
 		this.selectLensType = page.locator("button:has-text('Select Lens Type')");
 		this.non_Prescription = page.locator("//div[@data-name='Non-Prescription']");

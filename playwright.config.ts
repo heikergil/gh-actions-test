@@ -16,7 +16,7 @@ const config: PlaywrightTestConfig = {
 	/* Fail the build on CI if you accidentally left test.only in the source code. */
 	forbidOnly: !!process.env.CI,
 	/* Retry on CI only */
-	retries: 4,
+	retries: 0,
 	/* Opt out of parallel tests on CI. */
 	workers: process.env.CI ? 1 : 1,
 	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -69,24 +69,24 @@ const config: PlaywrightTestConfig = {
 						headless: true
 			},
 		 },
-		{
-			name: 'Mobile Safari',
-			use: {
-				...devices['iPhone XR'],
-				userAgent:
-				'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/15.4 Mobile/15A372 Safari/604.1',
-			  browserName: 'webkit',
-			  headless: true,
-			  viewport: {
-				width: 375,
-				height: 667,
-			  },
-			  deviceScaleFactor: 2,
-			  isMobile: true,
-			  hasTouch: true,
-			  defaultBrowserType: 'webkit',
-			},
-		 },
+		// {
+		// 	name: 'Mobile Safari',
+		// 	use: {
+		// 		...devices['iPhone XR'],
+		// 		userAgent:
+		// 		'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/15.4 Mobile/15A372 Safari/604.1',
+		// 	  browserName: 'webkit',
+		// 	  headless: true,
+		// 	  viewport: {
+		// 		width: 375,
+		// 		height: 667,
+		// 	  },
+		// 	  deviceScaleFactor: 2,
+		// 	  isMobile: true,
+		// 	  hasTouch: true,
+		// 	  defaultBrowserType: 'webkit',
+		// 	},
+		//  },
 	],
 
 	/* Folder for test artifacts such as screenshots, videos, traces, etc. */

@@ -1,13 +1,12 @@
 import { test, expect, Page } from '@playwright/test';
 import Homepage from '../../../page/homePage';
 
-test.describe.serial('Home Page tests @homepage @smoke', async () => {
+test.describe.serial.only('Home Page tests @homepage @smoke', async () => {
 	let page: Page;
 	let homepage: Homepage;
 	test.beforeAll(async ({ browser, baseURL }) => {
 		const context = await browser.newContext();
 		page = await context.newPage();
-		// await context.addCookies([{name:'__kla_id',value:'',path:'/', domain:'pair-eyewear.myshopify.com'}])
 		homepage = new Homepage(page, baseURL);
 		await homepage.handlePreviewBar()
 		await page.goto(homepage.localUrl, {waitUntil: 'load'} );
@@ -28,7 +27,7 @@ test.describe.serial('Home Page tests @homepage @smoke', async () => {
 		await expect.soft(homepage.shopKidsBtn).toBeVisible();
 	});
 
-	test('Customer should be able to see sunglasses CTA', async ({}) => {
+	test.skip('Customer should be able to see sunglasses CTA', async ({}) => {
 		await expect.soft(homepage.sunglassesCTA).toBeVisible();
 		await expect.soft(homepage.sunglassesCTAText).toHaveText('Sunglasses');
 		await expect.soft(homepage.sunglassesShopWomen).toBeVisible();
@@ -36,7 +35,7 @@ test.describe.serial('Home Page tests @homepage @smoke', async () => {
 		await expect.soft(homepage.sunglassesShopKids).toBeVisible();
 	});
 
-	test.skip('Customer Should see an empty cart before adding items', async ({}) => {
+	test('Customer Should see an empty cart before adding items', async ({}) => {
 		await homepage.clickMyCartIcon();
 		expect.soft(await homepage.returnMyCartValue()).toBe(0);
 		expect.soft(await homepage.returnMyCartSubtotal()).toBe(0);
