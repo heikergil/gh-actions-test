@@ -35,7 +35,7 @@ test.describe.serial('Home Page tests @homepage @smoke', async () => {
 		await expect.soft(homepage.sunglassesShopKids).toBeVisible();
 	});
 
-	test('Customer Should see an empty cart before adding items', async ({}) => {
+	test.skip('Customer Should see an empty cart before adding items', async ({}) => {
 		await homepage.clickMyCartIcon();
 		expect.soft(await homepage.returnMyCartValue()).toBe(0);
 		expect.soft(await homepage.returnMyCartSubtotal()).toBe(0);
